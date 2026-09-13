@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator QR — Herbarium</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/poster.css" />
+</head>
+<body>
+  <header class="site-header no-print">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 24 24" class="brand-icon" aria-hidden="true">
+          <path d="M12 22c-1-6 0-11 3-16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M15 6c4-3 7-3 7-3s0 4-3 7-7 3-7 3 0-4 3-7z" fill="currentColor"/>
+          <path d="M9 12C5 9 2 9 2 9s0 4 3 6 6 2 6 2 0-3-2-5z" fill="currentColor" opacity=".7"/>
+        </svg>
+        <span id="siteTitle">Herbarium Tanaman</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="qr.html" class="nav-link active">Generator QR</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="qr-main">
+    <div id="configWarn" class="config-warn no-print" hidden>
+      ⚠️ <b>BASE_URL belum diisi</b> di <code>assets/js/config.js</code>. QR yang dibuat akan mengarah ke alamat yang salah.
+      Isi dengan URL GitHub Pages Anda, contoh: <code>https://username.github.io/repo/</code>
+    </div>
+
+    <aside class="qr-controls no-print">
+      <h1>Generator QR Code</h1>
+      <p class="muted">Pilih tanaman & orientasi poster, lalu unduh PNG siap cetak atau cetak langsung.</p>
+
+      <label for="plantSelect" class="field-label">Tanaman</label>
+      <select id="plantSelect" class="select"></select>
+
+      <label for="orientSelect" class="field-label">Orientasi poster</label>
+      <select id="orientSelect" class="select">
+        <option value="landscape">Landscape — 1050×700 px</option>
+        <option value="portrait">Portrait — 700×1050 px</option>
+      </select>
+
+      <label for="urlPreview" class="field-label">URL tujuan QR</label>
+      <input id="urlPreview" class="input-readonly" readonly />
+
+      <div class="btn-row">
+        <button id="btnDownload" class="btn btn-primary">⬇ Unduh PNG</button>
+        <button id="btnPrint" class="btn btn-ghost">🖨 Cetak</button>
+      </div>
+      <button id="btnBatch" class="btn btn-secondary btn-block">📦 Unduh Semua QR (.zip)</button>
+
+      <p id="statusMsg" class="status"></p>
+
+      <div class="note-card">
+        <b>Catatan:</b>
+        <ul>
+          <li>QR mengarah ke <code>BASE_URL + tanaman.html?id=…</code> (isi BASE_URL di config.js).</li>
+          <li>Logo poster diatur lewat <code>CONFIG.LOGOS</code>.</li>
+          <li>Unduhan PNG skala 2×: landscape 2100×1400, portrait 1400×2100 px.</li>
+          <li>Portrait cocok untuk banner berdiri / kertas A4 portrait; landscape untuk label melebar / A5 landscape.</li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="qr-preview">
+      <div id="posterViewport">
+        <div id="posterScale">
+          <div id="posterMount"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/qr-generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herbarium Tanaman</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 24 24" class="brand-icon" aria-hidden="true">
+          <path d="M12 22c-1-6 0-11 3-16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M15 6c4-3 7-3 7-3s0 4-3 7-7 3-7 3 0-4 3-7z" fill="currentColor"/>
+          <path d="M9 12C5 9 2 9 2 9s0 4 3 6 6 2 6 2 0-3-2-5z" fill="currentColor" opacity=".7"/>
+        </svg>
+        <span id="siteTitle">Herbarium Tanaman</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link active">Beranda</a>
+        <a href="qr.html" class="nav-link">Generator QR</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 id="heroTitle">Herbarium Tanaman</h1>
+      <p id="heroTagline" class="tagline"></p>
+
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="searchInput" placeholder="Cari nama tanaman, nama latin, atau kategori…" autocomplete="off" />
+      </div>
+      <div id="categoryChips" class="chips" aria-label="Filter kategori"></div>
+    </section>
+
+    <section class="list-section">
+      <div id="loadingState" class="state">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Memuat data tanaman dari spreadsheet…</p>
+      </div>
+
+      <div id="errorState" class="state state-error" hidden>
+        <h2>⚠️ Belum dapat memuat data</h2>
+        <pre id="errorMessage"></pre>
+        <p class="hint">Buka file <code>README.md</code> bagian <b>KONFIGURASI</b> untuk panduan pengaturan spreadsheet.</p>
+      </div>
+
+      <div id="emptyState" class="state" hidden>
+        <p>🌿 Tidak ada tanaman yang cocok dengan pencarian/filter Anda.</p>
+      </div>
+
+      <div id="plantGrid" class="grid" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footerText">© 2026 Herbarium Tanaman — Dibangun dengan GitHub Pages + Google Spreadsheet.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

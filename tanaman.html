@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Tanaman — Herbarium</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 24 24" class="brand-icon" aria-hidden="true">
+          <path d="M12 22c-1-6 0-11 3-16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M15 6c4-3 7-3 7-3s0 4-3 7-7 3-7 3 0-4 3-7z" fill="currentColor"/>
+          <path d="M9 12C5 9 2 9 2 9s0 4 3 6 6 2 6 2 0-3-2-5z" fill="currentColor" opacity=".7"/>
+        </svg>
+        <span id="siteTitle">Herbarium Tanaman</span>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Beranda</a>
+        <a href="qr.html" class="nav-link">Generator QR</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <a href="index.html" class="back-link">← Kembali ke daftar tanaman</a>
+
+    <div id="loadingState" class="state">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Memuat informasi tanaman…</p>
+    </div>
+
+    <div id="errorState" class="state state-error" hidden>
+      <h2>⚠️ Tanaman tidak ditemukan</h2>
+      <pre id="errorMessage"></pre>
+      <a href="index.html" class="btn btn-primary">Ke Halaman Utama</a>
+    </div>
+
+    <article id="detailCard" class="detail" hidden>
+      <div class="detail-photo">
+        <img id="detailFoto" src="" alt="Foto tanaman" onerror="this.onerror=null;this.src='assets/img/placeholder.svg';" />
+        <div class="detail-badges">
+          <span id="badgeKategori" class="badge badge-big"></span>
+          <span id="badgeFamili" class="badge badge-big badge-alt"></span>
+        </div>
+      </div>
+
+      <div class="detail-info">
+        <h1 id="detailNama"></h1>
+        <p id="detailLatin" class="latin"></p>
+        <p id="detailNamaDaerah" class="subline" hidden></p>
+
+        <section id="secDeskripsi" class="detail-section">
+          <h2>📖 Deskripsi</h2>
+          <div id="deskripsiBody" class="prose"></div>
+        </section>
+
+        <section id="secManfaat" class="detail-section">
+          <h2>🌟 Manfaat</h2>
+          <ul id="manfaatList" class="check-list"></ul>
+        </section>
+
+        <div class="info-cards">
+          <section id="secHabitat" class="info-card">
+            <h2>🌍 Habitat</h2>
+            <p id="habitatText"></p>
+          </section>
+          <section id="secPerawatan" class="info-card">
+            <h2>🌱 Perawatan</h2>
+            <p id="perawatanText"></p>
+          </section>
+          <section id="secPerbanyakan" class="info-card">
+            <h2>🧬 Perbanyakan</h2>
+            <p id="perbanyakanText"></p>
+          </section>
+        </div>
+
+        <section id="secKeterangan" class="detail-section">
+          <h2>📝 Informasi Tambahan</h2>
+          <div id="keteranganBody" class="prose"></div>
+        </section>
+
+        <section id="secReferensi" class="detail-section">
+          <h2>📚 Referensi</h2>
+          <div id="referensiBody" class="ref-text"></div>
+        </section>
+
+        <div class="detail-actions">
+          <a id="qrLink" href="qr.html" class="btn btn-primary">⬇ Unduh QR Code Tanaman Ini</a>
+          <a href="index.html" class="btn btn-ghost">Kembali</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Herbarium Tanaman — Dibangun dengan GitHub Pages + Google Spreadsheet.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/detail.js"></script>
+</body>
+</html>

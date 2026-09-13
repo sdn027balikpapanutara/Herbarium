@@ -1,0 +1,213 @@
+/* =====================================================
+   POSTER QR — desain siap cetak
+   Landscape 1050x700 px | Portrait 700x1050 px
+   ===================================================== */
+
+.poster {
+  position: relative;
+  width: 1050px;
+  height: 700px;
+  background: #ddf2c2;
+  overflow: hidden;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #2b6a15;
+}
+.poster.portrait { width: 700px; height: 1050px; }
+
+/* Panel tengah berwarna lebih terang */
+.p-band {
+  position: absolute;
+  top: 0;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  background: #f1fae3;
+}
+
+/* ---- Ornamen sudut & sisi ---- */
+.p-deco { position: absolute; z-index: 1; }
+.p-tl { top: 0; left: 0; width: 260px; }
+.p-tr { top: 0; right: 0; width: 260px; transform: scaleX(-1); }
+.p-bl { bottom: 0; left: 0; width: 320px; }
+.p-br { bottom: 0; right: 0; width: 320px; transform: scaleX(-1); }
+
+.p-chev { position: absolute; top: 322px; width: 190px; z-index: 1; }
+.p-chev-l { left: 6px; }
+.p-chev-r { right: 6px; transform: scaleX(-1); }
+
+.p-flower { position: absolute; width: 132px; z-index: 4; }
+.p-fl-1 { top: 116px; left: 166px; }
+.p-fl-2 { top: 518px; left: 712px; }
+
+/* ---- Pill logo ---- */
+.p-logo-pill {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 64px;
+  background: #ffffff;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 0 28px;
+  box-shadow: 0 2px 8px rgba(60, 110, 40, 0.14);
+  z-index: 3;
+  white-space: nowrap;
+}
+.p-logo-pill img { height: 42px; max-width: 130px; object-fit: contain; }
+.p-pill-text {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #2b6a15;
+  text-transform: uppercase;
+}
+
+/* ---- Garis panah menuju tengah ---- */
+.p-arrows {
+  position: absolute;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  z-index: 2;
+}
+
+/* ---- Judul SCAN DISINI ---- */
+.p-title {
+  position: absolute;
+  top: 116px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 46px;
+  letter-spacing: 3px;
+  color: #2b6a15;
+  z-index: 2;
+}
+
+/* ---- Bingkai QR ---- */
+.p-qr-box {
+  position: absolute;
+  top: 184px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  height: 356px;
+  border: 1.6px solid #57a53f;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.p-qr-img { width: 300px; height: 300px; display: block; }
+.p-qr-placeholder {
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  line-height: 1.5;
+  text-align: center;
+  color: #2b6a15;
+}
+.p-spark { position: absolute; width: 28px; }
+.p-spark-tr { top: -13px; right: -14px; }
+.p-spark-bl { bottom: -13px; left: -14px; }
+
+/* ---- Nama tanaman ---- */
+.p-name {
+  position: absolute;
+  top: 562px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: #2b6a15;
+  z-index: 2;
+}
+
+/* ---- Elemen khusus portrait (disembunyikan di landscape) ---- */
+.p-latin,
+.p-hint,
+.p-tags { display: none; }
+
+.p-latin {
+  position: absolute;
+  left: 0; width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-size: 19px;
+  color: #4a7a33;
+  z-index: 2;
+}
+.p-hint {
+  position: absolute;
+  left: 0; width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #57a53f;
+  z-index: 2;
+}
+.p-tags {
+  position: absolute;
+  left: 0; width: 100%;
+  justify-content: center;
+  gap: 10px;
+  z-index: 2;
+}
+.p-tag {
+  background: #4d9e3d; color: #fff;
+  font-size: 13px; font-weight: 700;
+  padding: 6px 14px; border-radius: 999px;
+}
+.p-tag.alt { background: #fff; color: #2b6a15; border: 1.5px solid #57a53f; }
+
+/* =====================================================
+   VARIAN PORTRAIT — penataan ulang elemen
+   ===================================================== */
+.poster.portrait .p-band { width: 460px; bottom: 30px; }
+.poster.portrait .p-logo-pill { top: 18px; }
+.poster.portrait .p-arrows { top: 100px; width: 420px; }
+.poster.portrait .p-title { top: 120px; font-size: 40px; }
+.poster.portrait .p-qr-box { top: 186px; }
+.poster.portrait .p-name { top: 560px; font-size: 30px; }
+.poster.portrait .p-latin { display: block; top: 604px; }
+.poster.portrait .p-hint { display: block; top: 640px; }
+.poster.portrait .p-tags { display: flex; top: 682px; }
+.poster.portrait .p-chev { top: 470px; width: 104px; }
+.poster.portrait .p-fl-1 { top: 140px; left: 26px; width: 120px; }
+.poster.portrait .p-fl-2 { top: 600px; left: 544px; width: 120px; }
+.poster.portrait .p-bl, .poster.portrait .p-br { width: 280px; }
+
+/* ---- Wrapper preview & skala ---- */
+#posterViewport { width: 100%; max-width: 1050px; margin: 0 auto; overflow: hidden; }
+#posterScale { transform-origin: top left; }
+
+/* Poster sementara untuk render batch (di luar layar) */
+.offscreen-poster {
+  position: fixed;
+  top: 0;
+  left: -3200px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---- Aturan cetak: hanya poster yang dicetak ---- */
+@media print {
+  body * { visibility: hidden; }
+  #posterMount, #posterMount * { visibility: visible; }
+  #posterViewport { max-width: none; overflow: visible; }
+  #posterScale { transform: none !important; }
+  #posterMount { position: absolute; inset: 0 auto auto 0; }
+  .no-print { display: none !important; }
+}
