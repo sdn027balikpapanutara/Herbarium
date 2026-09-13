@@ -84,8 +84,9 @@
     ? `<a href="${Utils.esc(ref)}" target="_blank" rel="noopener noreferrer">${Utils.esc(ref)}</a>`
     : Utils.esc(ref);
 
-  // Tombol QR
-  Utils.qs("#qrLink").href = `qr.html?id=${encodeURIComponent(plant.id)}`;
+   // Tombol QR (opsional — hanya jika elemennya ada)
+  const qrLink = Utils.qs("#qrLink");
+  if (qrLink) qrLink.href = `qr.html?id=${encodeURIComponent(plant.id)}`;
 
   loading.hidden = true;
   card.hidden = false;
