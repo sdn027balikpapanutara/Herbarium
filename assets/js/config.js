@@ -16,7 +16,7 @@ const CONFIG = {
      Format: https://USERNAME-GITHUB.github.io/NAMA-REPO/
      Contoh : https://budi-herbarium.github.io/herbarium-web/
      Dipakai untuk membuat URL yang dikodekan ke dalam QR Code. */
-  BASE_URL: "https://github.com/sdn027balikpapanutara/Herbarium",
+  BASE_URL: "https://sdn027balikpapanutara.github.io/Herbarium/",
 
   /* ⚠️ WAJIB DIISI #2 — ID GOOGLE SPREADSHEET
      Ambil dari URL spreadsheet:
