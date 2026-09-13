@@ -1,5 +1,5 @@
 /* =====================================================
-   QR GENERATOR
+   QR GENERATOR (v2 — pakai qrcodejs dari cdnjs)
    - QR Code menuju halaman detail tanaman
    - Poster siap cetak: LANDSCAPE (1050x700) & PORTRAIT (700x1050)
    - Download PNG resolusi tinggi, cetak, dan batch ZIP
@@ -18,13 +18,11 @@
 
   Utils.qs("#siteTitle").textContent = CONFIG.SITE_TITLE;
 
-  /* Dimensi poster per orientasi */
   const DIMS = {
     landscape: { w: 1050, h: 700 },
     portrait: { w: 700, h: 1050 },
   };
 
-  /* Orientasi tersimpan di localStorage agar tidak reset tiap reload */
   function getStoredOrient() {
     try { return localStorage.getItem("herbarium-orient") || "landscape"; }
     catch (e) { return "landscape"; }
@@ -37,26 +35,70 @@
   let plants = [];
   let current = null;
 
-  /* ---------- Peringatan konfigurasi ---------- */
   if (!CONFIG.BASE_URL || CONFIG.BASE_URL.includes("USERNAME-GITHUB")) {
     Utils.qs("#configWarn").hidden = false;
   }
 
-  /* ---------- URL tujuan QR ---------- */
   function plantUrl(p) {
     const base = CONFIG.BASE_URL.replace(/\/+$/, "");
     return `${base}/tanaman.html?id=${encodeURIComponent(p.id)}`;
   }
 
-  /* ---------- Buat dataURL QR ---------- */
+  /* ---------- Buat dataURL QR (qrcodejs API) ---------- */
   function qrDataUrl(text) {
-    const canvas = document.createElement("canvas");
-    return QRCode.toCanvas(canvas, text, {
-      width: 600,
-      margin: 1,
-      errorCorrectionLevel: CONFIG.QR_ERROR_LEVEL || "M",
-      color: { dark: "#1c4a00", light: "#ffffff" },
-    }).then((c) => c.toDataURL("image/png"));
+    return new Promise((resolve, reject) => {
+      if (typeof QRCode === "undefined") {
+        reject(new Error(
+          "Library QRCode gagal dimuat dari CDN. Periksa tag <script> qrcodejs di qr.html, atau koneksi internet Anda."
+        ));
+        return;
+      }
+      const holder = document.createElement("div");
+      holder.style.cssText = "position:fixed;left:-9999px;top:0;";
+      document.body.appendChild(holder);
+      try {
+        const lvl = CONFIG.QR_ERROR_LEVEL || "M";
+        new QRCode(holder, {
+          text: text,
+          width: 600,
+          height: 600,
+          colorDark: "#1c4a00",
+          colorLight: "#ffffff",
+          correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel[lvl]) || QRCode.CorrectLevel.M,
+        });
+      } catch (e) {
+        holder.remove();
+        reject(e);
+        return;
+      }
+      // Tunggu satu tick agar canvas selesai digambar
+      setTimeout(() => {
+        try {
+          const canvas = holder.querySelector("canvas");
+          const img = holder.querySelector("img");
+          let url = null;
+          if (canvas) {
+            // Tambahkan quiet zone (margin putih) agar mudah dipindai
+            const pad = 48;
+            const out = document.createElement("canvas");
+            out.width = out.height = 600 + pad * 2;
+            const ctx = out.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, out.width, out.height);
+            ctx.drawImage(canvas, pad, pad, 600, 600);
+            url = out.toDataURL("image/png");
+          } else if (img && img.src) {
+            url = img.src;
+          }
+          holder.remove();
+          if (!url) throw new Error("Canvas QR tidak ditemukan.");
+          resolve(url);
+        } catch (e) {
+          holder.remove();
+          reject(e);
+        }
+      }, 60);
+    });
   }
 
   /* =====================================================
@@ -69,7 +111,7 @@
   }
 
   function cornerTopSVG() {
-    const inner = `
+    return `
       <svg class="p-deco p-tl" viewBox="0 0 260 230">
         <path d="M0 0h235c6 52-18 92-64 108-52 18-112 6-171-26V0z" fill="#4d9e3d"/>
         <ellipse cx="96" cy="152" rx="58" ry="42" fill="#8fd07a" transform="rotate(-14 96 152)"/>
@@ -103,7 +145,6 @@
           <ellipse cx="166" cy="108" rx="18" ry="7" transform="rotate(32 166 108)"/>
         </g>
       </svg>`;
-    return inner;
   }
 
   function cornerBottomSVG() {
@@ -173,10 +214,13 @@
       ? logos.map((src) => `<img src="${Utils.esc(src)}" crossorigin="anonymous" alt="logo" />`).join("")
       : `<span class="p-pill-text">${Utils.esc(CONFIG.SITE_TITLE)}</span>`;
 
-    // Tag kategori & famili (hanya tampil di portrait)
     const tags = [];
     if (plant.kategori) tags.push(`<span class="p-tag">${Utils.esc(plant.kategori)}</span>`);
     if (plant.famili) tags.push(`<span class="p-tag alt">${Utils.esc(plant.famili)}</span>`);
+
+    // Footer kecil berisi alamat website (hanya portrait, hanya jika BASE_URL sudah diisi)
+    const footerRaw = (CONFIG.BASE_URL || "").replace(/^https?:\/\//, "").replace(/\/+$/, "");
+    const footerText = footerRaw && !footerRaw.includes("USERNAME-GITHUB") ? footerRaw : "";
 
     return `
       <div class="poster ${orientation === "portrait" ? "portrait" : ""}">
@@ -199,10 +243,13 @@
         <div class="p-tags">${tags.join("")}</div>
         <div class="p-flower p-fl-1">${flowerSVG("a" + uid)}</div>
         <div class="p-flower p-fl-2">${flowerSVG("b" + uid)}</div>
+        <div class="p-flower p-fl-3">${flowerSVG("c" + uid)}</div>
+        <div class="p-flower p-fl-4">${flowerSVG("d" + uid)}</div>
+        ${footerText ? `<div class="p-footer">${Utils.esc(footerText)}</div>` : ""}
       </div>`;
   }
 
-  /* ---------- Skala preview agar responsif ---------- */
+  /* ---------- Skala preview ---------- */
   function fitScale() {
     const d = DIMS[orient];
     const w = viewport.clientWidth || d.w;
@@ -212,25 +259,29 @@
   }
   window.addEventListener("resize", fitScale);
 
-  /* ---------- Render preview tanaman terpilih ---------- */
+  /* ---------- Render preview (dengan penanganan error) ---------- */
   async function render(plant) {
     current = plant;
     const url = plantUrl(plant);
     urlPreview.value = url;
     statusMsg.textContent = "Membuat QR…";
-    const qr = await qrDataUrl(url);
-    mount.innerHTML = posterHTML(plant, qr, orient);
-    await Utils.preload(CONFIG.LOGOS || []);
-    fitScale();
-    statusMsg.textContent = "";
+    try {
+      const qr = await qrDataUrl(url);
+      mount.innerHTML = posterHTML(plant, qr, orient);
+      await Utils.preload(CONFIG.LOGOS || []);
+      fitScale();
+      statusMsg.textContent = "";
+    } catch (e) {
+      statusMsg.textContent = "❌ " + e.message;
+    }
   }
 
-  /* ---------- Render poster ke canvas (untuk download) ---------- */
+  /* ---------- Render poster ke canvas ---------- */
   async function posterToCanvas(node) {
     await document.fonts.ready;
     const d = DIMS[orient];
     return html2canvas(node, {
-      scale: 2, // landscape 2100x1400 | portrait 1400x2100
+      scale: 2,
       useCORS: true,
       backgroundColor: "#ddf2c2",
       logging: false,

@@ -36,9 +36,11 @@
 .p-chev-l { left: 6px; }
 .p-chev-r { right: 6px; transform: scaleX(-1); }
 
+/* ---- Bunga ---- */
 .p-flower { position: absolute; width: 132px; z-index: 4; }
 .p-fl-1 { top: 116px; left: 166px; }
 .p-fl-2 { top: 518px; left: 712px; }
+.p-fl-3, .p-fl-4 { display: none; } /* hanya untuk portrait */
 
 /* ---- Pill logo ---- */
 .p-logo-pill {
@@ -47,13 +49,14 @@
   left: 50%;
   transform: translateX(-50%);
   height: 64px;
+  max-width: 760px;
   background: #ffffff;
   border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  padding: 0 28px;
+  gap: 20px;
+  padding: 0 26px;
   box-shadow: 0 2px 8px rgba(60, 110, 40, 0.14);
   z-index: 3;
   white-space: nowrap;
@@ -135,10 +138,8 @@
   z-index: 2;
 }
 
-/* ---- Elemen khusus portrait (disembunyikan di landscape) ---- */
-.p-latin,
-.p-hint,
-.p-tags { display: none; }
+/* ---- Elemen khusus portrait ---- */
+.p-latin, .p-hint, .p-tags, .p-footer { display: none; }
 
 .p-latin {
   position: absolute;
@@ -171,29 +172,56 @@
   padding: 6px 14px; border-radius: 999px;
 }
 .p-tag.alt { background: #fff; color: #2b6a15; border: 1.5px solid #57a53f; }
+.p-footer {
+  position: absolute;
+  left: 0; width: 100%;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #4a7a33;
+  z-index: 2;
+}
 
 /* =====================================================
-   VARIAN PORTRAIT — penataan ulang elemen
+   VARIAN PORTRAIT — layout seimbang penuh (tanpa bolong)
    ===================================================== */
 .poster.portrait .p-band { width: 460px; bottom: 30px; }
-.poster.portrait .p-logo-pill { top: 18px; }
-.poster.portrait .p-arrows { top: 100px; width: 420px; }
-.poster.portrait .p-title { top: 120px; font-size: 40px; }
-.poster.portrait .p-qr-box { top: 186px; }
-.poster.portrait .p-name { top: 560px; font-size: 30px; }
-.poster.portrait .p-latin { display: block; top: 604px; }
-.poster.portrait .p-hint { display: block; top: 640px; }
-.poster.portrait .p-tags { display: flex; top: 682px; }
-.poster.portrait .p-chev { top: 470px; width: 104px; }
-.poster.portrait .p-fl-1 { top: 140px; left: 26px; width: 120px; }
-.poster.portrait .p-fl-2 { top: 600px; left: 544px; width: 120px; }
+
+.poster.portrait .p-logo-pill {
+  top: 26px;
+  height: 68px;
+  max-width: 560px;
+  gap: 14px;
+  padding: 0 18px;
+}
+.poster.portrait .p-logo-pill img { height: 38px; max-width: 96px; }
+
+.poster.portrait .p-arrows { top: 112px; width: 440px; }
+.poster.portrait .p-title { top: 132px; font-size: 44px; }
+
+.poster.portrait .p-qr-box { top: 214px; width: 400px; height: 420px; }
+.poster.portrait .p-qr-img { width: 350px; height: 350px; }
+
+.poster.portrait .p-name { top: 660px; font-size: 34px; }
+.poster.portrait .p-latin { display: block; top: 708px; font-size: 20px; }
+.poster.portrait .p-hint { display: block; top: 748px; }
+.poster.portrait .p-tags { display: flex; top: 788px; }
+.poster.portrait .p-footer { display: block; top: 952px; }
+
+.poster.portrait .p-chev { top: 500px; width: 104px; }
+
+.poster.portrait .p-fl-1 { top: 150px; left: 16px; width: 125px; }
+.poster.portrait .p-fl-2 { top: 620px; left: 559px; width: 125px; }
+.poster.portrait .p-fl-3 { display: block; top: 850px; left: 16px; width: 110px; }
+.poster.portrait .p-fl-4 { display: block; top: 850px; left: 574px; width: 110px; }
+
 .poster.portrait .p-bl, .poster.portrait .p-br { width: 280px; }
 
 /* ---- Wrapper preview & skala ---- */
 #posterViewport { width: 100%; max-width: 1050px; margin: 0 auto; overflow: hidden; }
 #posterScale { transform-origin: top left; }
 
-/* Poster sementara untuk render batch (di luar layar) */
 .offscreen-poster {
   position: fixed;
   top: 0;
@@ -202,7 +230,7 @@
   pointer-events: none;
 }
 
-/* ---- Aturan cetak: hanya poster yang dicetak ---- */
+/* ---- Aturan cetak ---- */
 @media print {
   body * { visibility: hidden; }
   #posterMount, #posterMount * { visibility: visible; }
